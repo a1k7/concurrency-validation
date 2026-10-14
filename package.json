@@ -1,0 +1,14 @@
+{
+  "name": "concurrency-validation",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Independent TOCTOU / cumulative-authorization-budget experiment (no third-party deps).",
+  "type": "module",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.js\"",
+    "demo": "node src/scenario.js"
+  }
+}

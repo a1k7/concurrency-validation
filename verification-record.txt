@@ -1,0 +1,73 @@
+CONCURRENCY VALIDATION — VERIFICATION RECORD
+Date: Wed Oct 14 09:53:32 IST 2026
+Project: /Users/akhileshwarik/concurrency-validation
+
+===== AUTOMATED TESTS =====
+
+> concurrency-validation@1.0.0 test
+> node --test "test/**/*.test.js"
+
+✔ initial state: remaining budget is $6,000 (1.308208ms)
+✔ unsafe model: both workers commit under the specified interleaving (0.291417ms)
+✔ unsafe model: final consumed is $12,000 (0.094875ms)
+✔ unsafe model: invariant FAILS (0.088792ms)
+✔ unsafe model: worker B used a stale check (0.110959ms)
+✔ atomic model: accepts exactly one request (0.145834ms)
+✔ atomic model: rejects exactly one request (0.148ms)
+✔ atomic model: final consumed is $8,000 (0.074458ms)
+✔ atomic model: invariant PRESERVED (0.099417ms)
+✔ atomic model: remaining budget after run is $2,000 (0.156625ms)
+✔ atomic: a single request within budget succeeds (0.093292ms)
+✔ atomic: a request exceeding remaining budget is rejected (0.0825ms)
+✔ atomic: rejected transaction does not change consumed amount (0.077334ms)
+✔ determinism: unsafe model is stable across 50 runs (0.207083ms)
+✔ determinism: atomic model is stable across 50 runs (0.324208ms)
+✔ validation: negative amount is rejected (0.35025ms)
+✔ validation: non-integer amount is rejected (0.088125ms)
+✔ validation: non-positive authorization limit is rejected (0.101792ms)
+✔ validation: consumed greater than limit is rejected (0.074459ms)
+✔ boundary: request exactly equal to remaining budget is accepted (0.049667ms)
+✔ mutex: releases after a successful transaction (0.125666ms)
+✔ mutex: releases after a rejected transaction (0.080208ms)
+✔ mutex: full scenario preserves invariant (0.161292ms)
+✔ unsafe primitives: stale decision commits even after budget is gone (0.06225ms)
+ℹ tests 24
+ℹ suites 0
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 150.040958
+
+===== DEMO =====
+
+> concurrency-validation@1.0.0 demo
+> node src/scenario.js
+
+SIMULATED CONCURRENCY EXPERIMENT
+
+Initial authorization limit: $10,000
+Previously consumed:         $4,000
+Remaining budget:            $6,000
+
+UNSAFE CHECK-THEN-COMMIT
+Worker A: initial check passed (remaining at check $6,000)
+Worker B: initial check passed (remaining at check $6,000)
+Worker A: committed $4,000
+Worker B: committed $4,000 using stale check
+Final consumed: $12,000
+Invariant: FAILED
+
+ATOMIC COMMIT
+Worker A: committed $4,000
+Worker B: rejected — insufficient remaining budget
+Final consumed: $8,000
+Invariant: PRESERVED
+
+(Values printed above come from the actual simulated state.)
+
+===== EXIT STATUS =====
+npm test exit code: 0
+npm run demo exit code: 0
+OVERALL RESULT: PASS
